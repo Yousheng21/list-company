@@ -1,11 +1,23 @@
 import React from 'react';
+import {withLayout} from "./layout/Layout";
+import {Table} from "./layout/Table/Table";
+import "./App.css";
 
 const App = (): JSX.Element => {
-  return (
-    <div className="App">
-      React
-    </div>
-  );
+    return (
+        <main className="main">
+            <Table>
+                <div>
+                    Компании
+                </div>
+            </Table>
+            <Table>
+                <div>
+                    Сотрудники
+                </div>
+            </Table>
+        </main>
+    );
 };
 
-export default App;
+export default withLayout(App);

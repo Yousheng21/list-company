@@ -1,0 +1,16 @@
+.table-wrapper {
+    display: grid;
+    grid-template-rows: 0.1fr 1fr;
+    grid-gap: 20px;
+
+    border: 1px solid var(--border);
+
+    padding: 20px 10px;
+
+    background-color: var(--bg-table);
+}
+
+.table-wrapper-header {
+    border-bottom: 1px solid var(--border);
+}
+
