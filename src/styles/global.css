@@ -7,4 +7,5 @@ body {
   --bg-page: #d3efef;
   --border: black;
   --bg-table: white;
+  --selected: lightgray;
 }

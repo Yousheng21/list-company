@@ -1,0 +1,26 @@
+[
+  {
+    "id": "21",
+    "firstName": "1",
+    "lastName": "Адрес",
+    "position": "Директор",
+    "select": false,
+    "companyId":"1"
+  },
+  {
+    "id": "22",
+    "firstName": "2",
+    "lastName": "Адрес",
+    "position": "Директор",
+    "select": false,
+    "companyId": "2"
+  },
+  {
+    "id": "23",
+    "firstName": "3",
+    "lastName": "Адрес",
+    "position": "Директор",
+    "select": false,
+    "companyId": "3"
+  }
+]
