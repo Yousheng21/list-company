@@ -1,0 +1,11 @@
+.form-company{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-company label {
+    display: grid;
+    grid-template-columns: 0.3fr 1fr;
+    grid-gap: 10px;
+}

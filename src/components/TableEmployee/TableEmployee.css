@@ -1,0 +1,11 @@
+.form-employee {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-employee label {
+    display: grid;
+    grid-template-columns: 0.4fr 1fr;
+    grid-gap: 10px;
+}

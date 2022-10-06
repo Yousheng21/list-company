@@ -7,6 +7,11 @@ export interface ICompany {
 }
 
 export interface IStateCompany {
-    companies: null | ICompany[];
+    companies: ICompany[];
     selectCompanies: string[];
 }
+
+export const templateCompany = {
+    name: "",
+    address: ""
+} as ICompany;

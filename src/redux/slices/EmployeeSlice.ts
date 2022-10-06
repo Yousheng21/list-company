@@ -16,11 +16,15 @@ export const EmployeeSlice = createSlice({
         add: (state, action:PayloadAction<IEmployee>) => {
             state.employees.push(action.payload);
         },
-        edit: (state, action: PayloadAction<{company: IEmployee, index:number}>) => {
-            state.employees.splice(action.payload.index,1,action.payload.company);
+        edit: (state, action: PayloadAction<{employee: IEmployee, index:number}>) => {
+            state.employees.splice(action.payload.index,1,action.payload.employee);
         },
-        remove: (state, action:PayloadAction<number>) => {
-            state.employees.splice(action.payload,1);
+        remove: (state, action:PayloadAction<number | number[]>) => {
+            if (typeof action.payload === "number") {
+                state.employees.splice(action.payload,1);
+            } else {
+                action.payload.map((item, index) => state.employees.splice(item - index,1));
+            }
         },
         addSelected: (state, action:PayloadAction<string>) => {
             state.selectedEmployees.push(action.payload);
@@ -28,9 +32,17 @@ export const EmployeeSlice = createSlice({
         removeSelected: (state, action:PayloadAction<number>) => {
             state.selectedEmployees.splice(action.payload,1);
         },
+        setAllSelected: (state, action:PayloadAction<string[]>) => {
+            state.selectedEmployees = action.payload;
+            state.employees = state.employees.map((item) => ({...item, select: true}));
+        },
+        clearAllSelected: (state) => {
+            state.selectedEmployees = [];
+            state.employees = state.employees.map((item) => ({...item, select: false}));
+        },
     },
 });
 
-export const { add, edit, remove, initialize, addSelected, removeSelected } = EmployeeSlice.actions;
+export const { add, edit, remove, initialize, addSelected, removeSelected, setAllSelected, clearAllSelected } = EmployeeSlice.actions;
 
 export default EmployeeSlice.reducer;
