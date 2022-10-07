@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "name": "Название компании1",
+    "address": "Адрес",
+    "countEmployees": 1,
+    "select": false
+  },
+  {
+    "id": "2",
+    "name": "Название компании2",
+    "address": "Адрес",
+    "countEmployees": 1,
+    "select": false
+  },
+  {
+    "id": "3",
+    "name": "Название компании3",
+    "address": "Адрес",
+    "countEmployees": 1,
+    "select": false
+  }
+]
