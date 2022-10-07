@@ -23,10 +23,11 @@ export const getEmployees = () => (dispatch: AppDispatch) => {
 export const editEmployee = (employee: IEmployee, id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
     const {selectedEmployees} = getState().employee;
     const index = getState().employee.employees.findIndex(item => Number(item.id) === Number(id));
+    const include = selectedEmployees.includes(employee.id);
 
-    if (employee.select) {
+    if (employee.select && !include) {
         dispatch(addSelected(employee.id));
-    } else {
+    } else if(include && !employee.select){
         dispatch(removeSelected(selectedEmployees.indexOf(employee.id)));
     }
 
@@ -57,8 +58,18 @@ export const removeAllEmployee = (selectedData?: string[]) => (dispatch: AppDisp
 
 export const setAllSelectEmployee = () => (dispatch: AppDispatch, getState: () => RootState) => {
     const {employees} = getState().employee;
-    const array = employees.map((employee) => employee.id);
-    dispatch(setAllSelected(array));
+    const {selectCompanies} = getState().company;
+    const arraySelected: string[] = [];
+
+    const newEmployees = employees.map((employee) => {
+        if (selectCompanies.includes(employee.companyId)) {
+            arraySelected.push(employee.id);
+            return {...employee, select:true};
+        }
+        return employee;
+    });
+    console.log(newEmployees);
+    dispatch(setAllSelected({payload: arraySelected, newEmployees}));
 };
 
 export const clearAllSelectEmployee = () => (dispatch: AppDispatch) => {

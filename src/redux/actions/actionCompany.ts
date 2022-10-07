@@ -21,11 +21,14 @@ export const getCompanies = () => (dispatch: AppDispatch) => {
 
 export const editCompany = (company: ICompany, index: number) => (dispatch: AppDispatch, getState: () => RootState) => {
     const {selectCompanies} = getState().company;
-    if (company.select) {
+    const include = selectCompanies.includes(company.id);
+
+    if (company.select && !include) {
         dispatch(addSelected(company.id));
-    } else {
+    } else if(include && !company.select) {
         dispatch(removeSelected(selectCompanies.indexOf(company.id)));
     }
+
     dispatch(edit({company, index}));
 };
 

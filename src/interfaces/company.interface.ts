@@ -10,8 +10,3 @@ export interface IStateCompany {
     companies: ICompany[];
     selectCompanies: string[];
 }
-
-export const templateCompany = {
-    name: "",
-    address: ""
-} as ICompany;

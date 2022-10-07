@@ -13,4 +13,5 @@ export interface TableProps {
     data: IEmployee[] | ICompany[] | null;
     selectedData: string[];
     setShowModal: (arg: boolean) => void;
+    changeData?: boolean;
 }

@@ -3,21 +3,28 @@ import cn from "classnames";
 import {TableEmployeeProps} from "./TableEmployee.props";
 import './TableEmployee.css';
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../redux/store";
-import {IEmployee, templateEmployee} from "../../interfaces/employee.interface";
+import {AppDispatch} from "../../redux/store";
+import {IEmployee} from "../../interfaces/employee.interface";
 import {addEmployee, clearAllSelectEmployee, editEmployee, getEmployees, removeAllEmployee, removeEmployee, setAllSelectEmployee,} from "../../redux/actions/actionEmployee";
 import {Table} from "../../layout/Table/Table";
 import {Form} from "../Form/Form";
+import {ICompany} from "../../interfaces/company.interface";
+import {isCompany} from "../../utils/utils";
+import {templateEmployee} from "../../data/data";
+import {Input} from "../Input/Input";
+import {filteredEmployees, getStateEmployee} from "../../redux/selectors/selectorEmployee";
+import {getStateCompany} from "../../redux/selectors/selectorCompany";
 
 export const TableEmployee = ({className, ...props}: TableEmployeeProps): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();
 
     const [showModal, setShowModal] = useState(false);
-
+    const [idEdit, setIdEdit] = useState("");
     const [data, setData] = useState(templateEmployee);
 
-    const {employees, selectedEmployees } = useSelector((state:RootState) => state.employee);
-    const {companies, selectCompanies} = useSelector((state:RootState) => state.company);
+    const {employees, selectedEmployees } = useSelector(getStateEmployee);
+    const {companies} = useSelector(getStateCompany);
+    const filtered = useSelector(filteredEmployees);
 
     useEffect(() => {
         if (!employees.length) dispatch(getEmployees());
@@ -33,13 +40,26 @@ export const TableEmployee = ({className, ...props}: TableEmployeeProps): JSX.El
 
     const handleCheckBox = (employee: IEmployee, e: ChangeEvent<HTMLInputElement>) => {
         const select = e.target.checked;
-
         dispatch(editEmployee({...employee, select}, employee.id));
     };
 
-    const filtered = useMemo(() => employees.filter((employee) => selectCompanies.includes(employee.companyId)),
-        [employees.length, selectCompanies.length, selectedEmployees.length]);
+    const handleSubmit = (employee: IEmployee | ICompany) => {
+        if (!isCompany(employee)) {
+            if (!idEdit) {
+                dispatch(addEmployee(employee));
+            } else {
+                dispatch(editEmployee(employee, idEdit));
+            }
+        }
+    };
 
+    const handleEdit = (employee:IEmployee, id: string) => {
+        setData(employee);
+        setShowModal(true);
+        setIdEdit(id);
+    };
+
+    const changeData = useMemo(() => !!selectedEmployees.length && selectedEmployees.length === filtered.length, [selectedEmployees.length]);
     return (
         <Table
             isEmployee
@@ -50,6 +70,7 @@ export const TableEmployee = ({className, ...props}: TableEmployeeProps): JSX.El
             data={employees}
             selectedData={selectedEmployees}
             setShowModal={setShowModal}
+            changeData={changeData}
         >
             <div className={cn("table-wrapper-body", className)} {...props}>
                 {filtered.map((employee) => (
@@ -61,28 +82,16 @@ export const TableEmployee = ({className, ...props}: TableEmployeeProps): JSX.El
                         <div>{employee.position}</div>
                         <div>
                             <input type="checkbox" checked={employee.select} onChange={(e) => handleCheckBox(employee, e)} name="" id=""/>
-                            <button onClick={() => {
-                                setData(employee);
-                                setShowModal(true);
-                            }}>Edit</button>
+                            <button onClick={() => handleEdit(employee, employee.id)}>Edit</button>
                         </div>
                     </div>
                 ))}
             </div>
-            <Form data={data} show={showModal} save={addEmployee} setShow={setShowModal} >
+            <Form data={data} show={showModal} save={handleSubmit} setShow={setShowModal} >
                 <div className="form-employee">
-                    <label htmlFor="firstName">
-                        Имя
-                        <input onChange={handleData} value={data.firstName} name="firstName" id="firstName"/>
-                    </label>
-                    <label htmlFor="lastName">
-                        Фамилия
-                        <input onChange={handleData} value={data.lastName} name="lastName" id="lastName"/>
-                    </label>
-                    <label htmlFor="position">
-                        Должность
-                        <input onChange={handleData} value={data.position} name="position" id="position"/>
-                    </label>
+                    <Input title="Имя" onChange={handleData} value={data.firstName} name="firstName"/>
+                    <Input title="Фамилия" onChange={handleData} value={data.lastName} name="lastName" />
+                    <Input title="Должность" onChange={handleData} value={data.position} name="position" />
                     <select name="companyId" value={data.companyId} onChange={handleData}>
                         <option hidden value="">Компания</option>
                         {companies.map((company) => <option key={company.id} value={company.id}>{company.name}</option>)}

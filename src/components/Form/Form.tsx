@@ -2,16 +2,12 @@ import React, {useId} from 'react';
 import {FormProps} from "./Form.props";
 import ReactDOM from "react-dom";
 import "./Form.css";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../redux/store";
 
 export const Form = ({children, data, show, setShow, save}: FormProps): JSX.Element | null => {
-    const dispatch: AppDispatch = useDispatch();
-
     const id = useId();
 
     const handleSave = () => {
-        dispatch(save({...data, id, select: false}));
+        save({...data, id: data.id ?? id, select: data.select ?? false});
         setShow(false);
     };
 
@@ -25,7 +21,7 @@ export const Form = ({children, data, show, setShow, save}: FormProps): JSX.Elem
                     {children}
                     <div className="modal-form__buttons">
                         <button onClick={() => setShow(false)}>Отменить</button>
-                        <button type="button" onClick={handleSave}>Save</button>
+                        <button type="button" onClick={handleSave}>Сохранить</button>
                     </div>
                 </form>
 

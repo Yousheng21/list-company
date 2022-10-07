@@ -25,6 +25,7 @@ export const CompanySlice = createSlice({
             } else {
                 action.payload.map((item, index) => state.companies.splice(item - index,1));
             }
+            state.selectCompanies = [];
         },
         addSelected: (state, action:PayloadAction<string>) => {
             state.selectCompanies.push(action.payload);

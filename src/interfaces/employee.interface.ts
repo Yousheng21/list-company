@@ -11,10 +11,3 @@ export interface IStateEmployee  {
     employees: IEmployee[];
     selectedEmployees: string[];
 }
-
-export const templateEmployee = {
-    firstName: "",
-    lastName: "",
-    position: "",
-    companyId: ""
-} as IEmployee;
