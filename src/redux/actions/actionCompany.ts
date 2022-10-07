@@ -6,7 +6,7 @@ import {
     remove,
     removeSelected,
     setAllSelected,
-    add
+    add, updatePage
 } from "../slices/CompanySlice";
 import data from "../../api/dataCompanies.json";
 import {AppDispatch, RootState} from "../store";
@@ -14,9 +14,17 @@ import {ICompany} from "../../interfaces/company.interface";
 import {IEmployee} from "../../interfaces/employee.interface";
 import {isCompany} from "../../utils/utils";
 
-export const getCompanies = () => (dispatch: AppDispatch) => {
-    const resp = data;
-    dispatch(initialize(resp));
+export const getCompanies = () => (dispatch: AppDispatch, getState: () => RootState) => {
+    const {page, perPage} = getState().company;
+    const resp = [...data];
+
+    const start = page*perPage;
+    let end = page*perPage + perPage;
+
+    if (resp.length < page*perPage + perPage)  {
+        end = resp.length;
+    }
+    dispatch(updatePage(resp.slice(start, end)));
 };
 
 export const editCompany = (company: ICompany, index: number) => (dispatch: AppDispatch, getState: () => RootState) => {

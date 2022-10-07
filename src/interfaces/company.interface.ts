@@ -7,6 +7,8 @@ export interface ICompany {
 }
 
 export interface IStateCompany {
+    page: number;
+    perPage: number;
     companies: ICompany[];
     selectCompanies: string[];
 }
