@@ -1,18 +1,9 @@
-import {
-    add,
-    addSelected,
-    clearAllSelected,
-    edit,
-    initialize,
-    remove,
-    removeSelected,
-    setAllSelected
-} from "../slices/EmployeeSlice";
+import {add, addSelected, clearAllSelected, edit, initialize, remove, removeSelected, setAllSelected} from "../slices/EmployeeSlice";
 import data from "../../api/dataEmployees.json";
 import {AppDispatch, RootState} from "../store";
 import {IEmployee} from "../../interfaces/employee.interface";
 import {ICompany} from "../../interfaces/company.interface";
-import {isCompany} from "../../utils/utils";
+import {companyEmployee, isCompany} from "../../utils/utils";
 import {changeCountEmployees} from "./actionCompany";
 
 export const getEmployees = () => (dispatch: AppDispatch) => {
@@ -44,13 +35,13 @@ export const addEmployee = (employee: IEmployee | ICompany) => (dispatch: AppDis
 export const removeEmployee = (data: number | number[], selectedData: string[]) => (dispatch: AppDispatch, getState: () => RootState) => {
     const {employees} = getState().employee;
     dispatch(remove(data));
-    selectedData.map(item => dispatch(changeCountEmployees(employees.filter(employee => employee.id === item)[0].companyId, "minus")));
+    selectedData.map(item => dispatch(changeCountEmployees(companyEmployee(employees, item), "minus")));
 };
 
 export const removeAllEmployee = (selectedData?: string[]) => (dispatch: AppDispatch, getState: () => RootState) => {
     if (selectedData){
         const {employees} = getState().employee;
-        selectedData.map(item => dispatch(changeCountEmployees(employees.filter(employee => employee.id === item)[0].companyId, "minus")));
+        selectedData.map(item => dispatch(changeCountEmployees(companyEmployee(employees, item), "minus")));
     }
     dispatch(initialize([]));
     dispatch(clearAllSelected());
@@ -68,7 +59,7 @@ export const setAllSelectEmployee = () => (dispatch: AppDispatch, getState: () =
         }
         return employee;
     });
-    console.log(newEmployees);
+
     dispatch(setAllSelected({payload: arraySelected, newEmployees}));
 };
 

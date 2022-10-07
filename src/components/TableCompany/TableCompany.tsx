@@ -13,8 +13,9 @@ import {isCompany} from "../../utils/utils";
 import {templateCompany} from "../../data/data";
 import {Input} from "../Input/Input";
 import {getStateCompany} from "../../redux/selectors/selectorCompany";
+import apiCompanies from "../../api/dataCompanies.json";
 
-export const TableCompany = ({className, ...props}: TableCompanyProps): JSX.Element => {
+export const TableCompany = ({className}: TableCompanyProps): JSX.Element => {
     const dispatch: AppDispatch = useDispatch();
 
     const [showModal, setShowModal] = useState(false);
@@ -56,6 +57,17 @@ export const TableCompany = ({className, ...props}: TableCompanyProps): JSX.Elem
         setIndexEdit(index);
     };
 
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const containerHeight = e.currentTarget.clientHeight;
+        const scrollHeight = e.currentTarget.scrollHeight;
+        const scrollTop = e.currentTarget.scrollTop;
+
+        if (scrollHeight - containerHeight < scrollTop + 30 && companies.length < apiCompanies.length) {
+            dispatch(getCompanies());
+            e.currentTarget.scroll(0, scrollTop/2);
+        }
+    };
+
     const changeData = useMemo(() => !!companies?.length && companies?.length === selectCompanies.length, [selectCompanies.length]);
 
     if (!companies) return <span>Loading...</span>;
@@ -70,7 +82,7 @@ export const TableCompany = ({className, ...props}: TableCompanyProps): JSX.Elem
             changeData={changeData}
             selectedData={selectCompanies}
         >
-            <div className={cn("table-wrapper-body", className)} {...props}>
+            <div className={cn("table-wrapper-body", className)} onScroll={handleScroll}>
                 {companies.map((company, index) => (
                     <div key={company.id} className={cn("row", {
                         row__selected: company.select

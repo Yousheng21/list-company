@@ -11,3 +11,7 @@ export function compareNumeric(a: number, b: number) {
 export function isCompany(object: ICompany | IEmployee): object is ICompany {
     return "address" in object;
 }
+
+export function companyEmployee(employees: IEmployee[], item:string) {
+    return employees.filter(employee => employee.id === item)[0].companyId;
+}

@@ -2,6 +2,8 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {ICompany, IStateCompany} from "../../interfaces/company.interface";
 
 const initialState = {
+    page:0,
+    perPage:10,
     companies: [],
     selectCompanies: []
 };
@@ -41,9 +43,13 @@ export const CompanySlice = createSlice({
             state.selectCompanies = [];
             state.companies = state.companies.map((item) => ({...item, select: false}));
         },
+        updatePage: (state, action:PayloadAction<ICompany[]>) => {
+            state.companies = [...state.companies, ...action.payload];
+            state.page += 1;
+        },
     },
 });
 
-export const { add, edit, remove, initialize, addSelected, removeSelected, setAllSelected, clearAllSelected } = CompanySlice.actions;
+export const { add, edit, remove, initialize, addSelected, removeSelected, setAllSelected, clearAllSelected, updatePage } = CompanySlice.actions;
 
 export default CompanySlice.reducer;

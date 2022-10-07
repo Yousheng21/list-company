@@ -5,7 +5,7 @@
     "lastName": "Адрес",
     "position": "Директор",
     "select": false,
-    "companyId":"1"
+    "companyId":"633ffb1285822afb47c6617b"
   },
   {
     "id": "22",
@@ -13,7 +13,7 @@
     "lastName": "Адрес",
     "position": "Директор",
     "select": false,
-    "companyId": "2"
+    "companyId": "633ffb1285822afb47c6617b"
   },
   {
     "id": "23",
@@ -21,6 +21,6 @@
     "lastName": "Адрес",
     "position": "Директор",
     "select": false,
-    "companyId": "3"
+    "companyId": "633ffb1285822afb47c6617b"
   }
 ]
